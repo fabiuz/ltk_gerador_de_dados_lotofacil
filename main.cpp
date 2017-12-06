@@ -26,7 +26,7 @@ int main()
     // Cria a pasta se não existe.
     struct stat diretorio;
     if(stat("./arquivos_csv", &diretorio) == -1){
-        if(!mkdir("arquivos_csv", 0770)){
+        if(mkdir("arquivos_csv", 0770) != 0){
             fprintf(stderr, "Nao foi possivel criar o diretorio arquivos_csv\n");
             return -1;
         }
@@ -40,3 +40,4 @@ int main()
     cout << "Todos os arquivos foram gerados com sucesso!!!" << endl;
     return 0;
 }
+

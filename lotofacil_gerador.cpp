@@ -1,3 +1,12 @@
+/**
+  Programa:     ltk_gerador_de_dados_lotofacil
+  Autor:        Fábio Moura de Oliveira
+  Arquivo:      lotofacil_gerador.cpp
+  Descrição:    Este arquivo percorre todas as combinações possíveis da lotofacil
+                e chama as funções que geram os dados estatísticos.
+**/
+
+
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -12,6 +21,7 @@
 #include "lotofacil_id_quarteto.h"
 #include "lotofacil_id_trio.h"
 #include "lotofacil_id_coluna_b.h"
+#include "lotofacil_soma.hpp"
 
 
 using namespace std;
@@ -108,6 +118,7 @@ bool gerador_lotofacil(){
     FILE *f_lotofacil_num_bolas = fopen("./arquivos_csv/lotofacil_num_bolas.csv", "w");
     FILE *f_lotofacil_id = fopen("./arquivos_csv/lotofacil_id.csv", "w");
     FILE *f_lotofacil_diferenca = fopen("./arquivos_csv/lotofacil_diferenca_entre_bolas.csv", "w");
+    FILE *f_lotofacil_soma = fopen("./arquivos_csv/lotofacil_soma.csv", "w");
 
     if(ferror(f_lotofacil_num)){
         fprintf(stderr, "Erro ao abrir 'arquivo_lotofacil_num.csv pra gravacao");
@@ -127,6 +138,10 @@ bool gerador_lotofacil(){
     }
     if(ferror(f_lotofacil_diferenca)){
         fprintf(stderr, "Erro ao abrir 'arquivo_diferenca_entre_bolas.csv pra gravacao");
+        return false;
+    }
+    if(ferror(f_lotofacil_soma)){
+        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_soma.csv' pra gravação");
         return false;
     }
 
@@ -171,6 +186,8 @@ bool gerador_lotofacil(){
     fprintf(f_lotofacil_diferenca, ";qt_1;qt_2;qt_3;qt_4;qt_5;qt_6;qt_7;qt_8;qt_9;qt_10;qt_11");
     fprintf(f_lotofacil_diferenca, ";qt_alt");
 
+    // Arquivo: lotofacil_soma.csv
+    fprintf(f_lotofacil_soma, "ltf_id;ltf_qt;bola_soma");
 
     // Identificador pra cada combinaçao valida da lotofacil.
     long ltf_id = 0;
@@ -213,6 +230,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_id(ltf_id, ltf_qt, lotofacil_num, lotofacil_bolas, f_lotofacil_id);
         gerar_lotofacil_num_bolas(ltf_id, ltf_qt, ltf_seq, lotofacil_bolas, f_lotofacil_num_bolas);
         gerar_lotofacil_diferenca(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_diferenca);
+        gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -256,6 +274,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_id(ltf_id, ltf_qt, lotofacil_num, lotofacil_bolas, f_lotofacil_id);
         gerar_lotofacil_num_bolas(ltf_id, ltf_qt, ltf_seq, lotofacil_bolas, f_lotofacil_num_bolas);
         gerar_lotofacil_diferenca(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_diferenca);
+        gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -301,6 +320,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_id(ltf_id, ltf_qt, lotofacil_num, lotofacil_bolas, f_lotofacil_id);
         gerar_lotofacil_num_bolas(ltf_id, ltf_qt, ltf_seq, lotofacil_bolas, f_lotofacil_num_bolas);
         gerar_lotofacil_diferenca(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_diferenca);
+        gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -348,6 +368,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_id(ltf_id, ltf_qt, lotofacil_num, lotofacil_bolas, f_lotofacil_id);
         gerar_lotofacil_num_bolas(ltf_id, ltf_qt, ltf_seq, lotofacil_bolas, f_lotofacil_num_bolas);
         gerar_lotofacil_diferenca(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_diferenca);
+        gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -363,6 +384,7 @@ sair:
     fclose(f_lotofacil_id);
     fclose(f_lotofacil_num_bolas);
     fclose(f_lotofacil_diferenca);
+    fclose(f_lotofacil_soma);
 
     return true;
 }

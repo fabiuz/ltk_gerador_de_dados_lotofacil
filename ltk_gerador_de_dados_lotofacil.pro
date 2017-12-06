@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     lotofacil_id_hrz_vrt_dg_crz.cpp \
     lotofacil_id_externo_interno.cpp \
     lotofacil_id_primo_nao_primo.cpp \
-    lotofacil_diferenca_entre_bolas.cpp
+    lotofacil_diferenca_entre_bolas.cpp \
+    lotofacil_soma.cpp
 
 
 HEADERS += \
@@ -24,4 +25,5 @@ HEADERS += \
     lotofacil_id_externo_interno.h \
     lotofacil_id_primo_nao_primo.h \
     lotofacil_id_par_impar.h \
-    lotofacil_diferenca_entre_bolas.h
+    lotofacil_diferenca_entre_bolas.h \
+    lotofacil_soma.hpp
