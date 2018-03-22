@@ -13,7 +13,12 @@ SOURCES += main.cpp \
     lotofacil_id_externo_interno.cpp \
     lotofacil_id_primo_nao_primo.cpp \
     lotofacil_diferenca_entre_bolas.cpp \
-    lotofacil_soma.cpp
+    lotofacil_soma.cpp \
+    lotofacil_hash.cpp \
+    lotomania.cpp \
+    lotofacil_giro.cpp \
+    lotofacil_deslocamento.cpp \
+    lotofacil_novos_repetidos.cpp
 
 
 HEADERS += \
@@ -26,4 +31,8 @@ HEADERS += \
     lotofacil_id_primo_nao_primo.h \
     lotofacil_id_par_impar.h \
     lotofacil_diferenca_entre_bolas.h \
-    lotofacil_soma.hpp
+    lotofacil_soma.hpp \
+    lotofacil_hash.hpp \
+    lotofacil_deslocamento.hpp \
+    lotofacil_giro.hpp \
+    lotofacil_novos_repetidos.hpp

@@ -1,5 +1,6 @@
 /**
   Autor:    Fábio Moura de Oliveira
+  Programa: ltk_gerador_de_dados_lotofacil
 
   Algoritmo pra gerar ids pra cada combinação de externo x interno da lotofacil.
 

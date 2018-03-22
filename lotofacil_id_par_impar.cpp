@@ -26,7 +26,7 @@ static long par_impar_id[QT_PARES_ALOCADOS][QT_IMPARES_ALOCADOS][2];
 /*!
  * \brief obter_par_impar_id Obtém o identificador da combinação par x impar válida
  * na lotofacil.
- * \param qt_pares  Quantidade de números pares
+ * \param qt_pares      Quantidade de números pares
  * \param qt_impares    Quantidade de números ímpares.
  * \return Retorna o identificador da combinação formada pelo parâmetros qt_pares e
  * qt_impares, se for válida na lotofacil ou retorna -1 se os parâmetros qt_pares e
