@@ -694,7 +694,7 @@ inline bool gerar_lotofacil_id(long ltf_id, long ltf_qt, const long *const lotof
                                                     id_b1_b2_b3,
                                                     id_b1_b2_b3_b4,
                                                     id_b1_b2_b3_b4_b5);
-    fprintf(f_arquivo_id, ";%li;%li;%li", id_b1, id_b1_b15, id_b1_b8_b15, id_b1_b4_b8_b12_b15);
+    fprintf(f_arquivo_id, ";%li;%li;%li", id_b1_b15, id_b1_b8_b15, id_b1_b4_b8_b12_b15);
 
     // Agora, iremos contabilizar a quantidade de combinacoes, pra posteriormente, gravarmos.
     /**
