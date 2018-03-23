@@ -196,7 +196,7 @@ bool gerador_lotofacil(){
     for(int uA = 1; uA <= 18; uA++){
         fprintf(f_lotofacil_diferenca, ";df_%i", uA);
     }
-    fprintf(f_lotofacil_diferenca, ";qt_1;qt_2;qt_3;qt_4;qt_5;qt_6;qt_7;qt_8;qt_9;qt_10;qt_11");
+    fprintf(f_lotofacil_diferenca, ";qt_dif_1;qt_dif_2;qt_dif_3;qt_dif_4;qt_dif_5;qt_dif_6;qt_dif_7;qt_dif_8;qt_dif_9;qt_dif_10;qt_dif_11");
     fprintf(f_lotofacil_diferenca, ";qt_alt");
 
     // Arquivo: lotofacil_soma.csv
