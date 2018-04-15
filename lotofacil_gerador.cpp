@@ -24,6 +24,7 @@
 #include "lotofacil_soma.hpp"
 #include "lotofacil_hash.hpp"
 #include "lotofacil_deslocamento.hpp"
+#include "lotofacil_grupo.hpp"
 
 
 using namespace std;
@@ -79,6 +80,11 @@ bool gerar_arquivo_id(){
         return false;
     }
 
+    if(!gerar_grupo_id()){
+        fprintf(stderr, "Erro ao gerar arquivo de grupos.");
+        return false;
+    }
+
     return true;
 }
 
@@ -124,6 +130,20 @@ bool gerador_lotofacil(){
     FILE *f_lotofacil_hash = fopen("./arquivos_csv/lotofacil_hash.csv", "w");
     FILE *f_lotofacil_giro = fopen("./arquivos_csv/lotofacil_giro.csv", "w");
 
+    /*
+    FILE *f_lotofacil_grupo_2_bolas = fopen("./arquivos_csv/lotofacil_grupo_2_bolas.csv", "w");
+    FILE *f_lotofacil_grupo_3_bolas = fopen("./arquivos_csv/lotofacil_grupo_3_bolas.csv", "w");
+        FILE *f_lotofacil_grupo_4_bolas = fopen("./arquivos_csv/lotofacil_grupo_4_bolas.csv", "w");
+        FILE *f_lotofacil_grupo_5_bolas = fopen("./arquivos_csv/lotofacil_grupo_5_bolas.csv", "w");
+        FILE *f_lotofacil_grupo_6_bolas = fopen("./arquivos_csv/lotofacil_grupo_6_bolas.csv", "w");
+        FILE *f_lotofacil_grupo_7_bolas = fopen("./arquivos_csv/lotofacil_grupo_7_bolas.csv", "w");
+        FILE *f_lotofacil_grupo_8_bolas = fopen("./arquivos_csv/lotofacil_grupo_8_bolas.csv", "w");
+        FILE *f_lotofacil_grupo_9_bolas = fopen("./arquivos_csv/lotofacil_grupo_9_bolas.csv", "w");
+        FILE *f_lotofacil_grupo_10_bolas = fopen("./arquivos_csv/lotofacil_grupo_10_bolas.csv", "w");
+    */
+
+
+
     if(ferror(f_lotofacil_num)){
         fprintf(stderr, "Erro ao abrir 'arquivo_lotofacil_num.csv pra gravacao");
         return false;
@@ -156,6 +176,49 @@ bool gerador_lotofacil(){
         fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_giro.csv' pra gravaçaõ.");
         return false;
     }
+
+//    if(ferror(f_lotofacil_grupo_2_bolas)){
+//        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_grupo_2_bolas.csv', pra gravação.");
+//        return false;
+//    }
+//    if(ferror(f_lotofacil_grupo_3_bolas)){
+//        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_grupo_3_bolas.csv', pra gravação.");
+//        return false;
+//    }
+    /*
+    if(ferror(f_lotofacil_grupo_4_bolas)){
+        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_grupo_4_bolas.csv', pra gravação.");
+        return false;
+    }
+    if(ferror(f_lotofacil_grupo_5_bolas)){
+        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_grupo_5_bolas.csv', pra gravação.");
+        return false;
+    }
+    */
+    /*
+    if(ferror(f_lotofacil_grupo_6_bolas)){
+        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_grupo_6_bolas.csv', pra gravação.");
+        return false;
+    }
+    if(ferror(f_lotofacil_grupo_7_bolas)){
+        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_grupo_7_bolas.csv', pra gravação.");
+        return false;
+    }
+    if(ferror(f_lotofacil_grupo_8_bolas)){
+        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_grupo_8_bolas.csv', pra gravação.");
+        return false;
+    }
+    if(ferror(f_lotofacil_grupo_9_bolas)){
+        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_grupo_9_bolas.csv', pra gravação.");
+        return false;
+    }
+    if(ferror(f_lotofacil_grupo_10_bolas)){
+        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_grupo_10_bolas.csv', pra gravação.");
+        return false;
+    }
+    */
+
+
 
     // Gera os cabecalhos dos arquivos.
     // Arquivo: lotofacil_num.csv
@@ -207,6 +270,39 @@ bool gerador_lotofacil(){
 
     // Arquivo: lotofacil_giro.csv
     fprintf(f_lotofacil_giro, "ltf_id;ltf_qt;giro_tipo;ltf_id_giro;qt_bolas_em_comum");
+
+    // Arquivo: lotofacil_grupo
+//    fprintf(f_lotofacil_grupo_2_bolas, "ltf_id;ltf_qt;grp_id");
+//    fprintf(f_lotofacil_grupo_3_bolas, "ltf_id;ltf_qt;grp_id");
+    /*
+    fprintf(f_lotofacil_grupo_4_bolas, "ltf_id;ltf_qt;grp_id");
+    fprintf(f_lotofacil_grupo_5_bolas, "ltf_id;ltf_qt;grp_id");
+    */
+    /*
+    fprintf(f_lotofacil_grupo_6_bolas, "ltf_id;ltf_qt;grp_id");
+    fprintf(f_lotofacil_grupo_7_bolas, "ltf_id;ltf_qt;grp_id");
+    fprintf(f_lotofacil_grupo_8_bolas, "ltf_id;ltf_qt;grp_id");
+    fprintf(f_lotofacil_grupo_9_bolas, "ltf_id;ltf_qt;grp_id");
+    fprintf(f_lotofacil_grupo_10_bolas, "ltf_id;ltf_qt;grp_id");
+    */
+
+    // Isto será usado pra ser passado para uma função.
+    FILE * f_lotofacil_grupo[4] = {
+        0, 0,
+//        f_lotofacil_grupo_2_bolas,
+//        f_lotofacil_grupo_3_bolas,
+        /*
+        f_lotofacil_grupo_4_bolas,
+        f_lotofacil_grupo_5_bolas
+        f_lotofacil_grupo_6_bolas,
+        f_lotofacil_grupo_7_bolas,
+        f_lotofacil_grupo_8_bolas,
+        f_lotofacil_grupo_9_bolas,
+        f_lotofacil_grupo_10_bolas
+            */
+    };
+
+
 
     // Identificador pra cada combinaçao valida da lotofacil.
     long ltf_id = 0;
@@ -261,6 +357,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
+        //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -318,6 +415,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
+        //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -376,6 +474,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
+        //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -428,6 +527,7 @@ bool gerador_lotofacil(){
         lotofacil_bolas[13] = b13; lotofacil_bolas[14] = b14; lotofacil_bolas[15] = b15; lotofacil_bolas[16] = b16;
         lotofacil_bolas[17] = b17; lotofacil_bolas[18] = b18;
 
+
         gerar_lotofacil_num(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_num);
         gerar_lotofacil_bolas(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_bolas);
         gerar_lotofacil_id(ltf_id, ltf_qt, lotofacil_num, lotofacil_bolas, f_lotofacil_id);
@@ -436,6 +536,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
+        //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -455,6 +556,10 @@ sair:
     fclose(f_lotofacil_soma);
     fclose(f_lotofacil_hash);
     fclose(f_lotofacil_giro);
+
+//    for(int uA = 2; uA <= 10; uA++){
+//        fclose(f_lotofacil_grupo[uA]);
+//    }
 
     return true;
 }

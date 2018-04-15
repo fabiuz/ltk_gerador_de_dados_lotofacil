@@ -14,6 +14,10 @@
 #ifndef LOTOFACIL_DESLOCAMENTO_HPP
 #define LOTOFACIL_DESLOCAMENTO_HPP
 
+/**
+   Tabela de deslocamento pra lotofacil
+   Autor: Fábio Moura de Oliveira.
+  **/
 static const long lotofacil_deslocamento[19][26] =
 {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -37,6 +41,283 @@ static const long lotofacil_deslocamento[19][26] =
     {0, 134596,  33649,  7315,  1330,  190,  19,   1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
 };
+
+inline long obter_deslocamento_10_bolas(long b1, long b2, long b3, long b4, long b5,
+                                long b6, long b7, long b8, long b9, long b10)
+{
+    // Pra cada combinação de qt_bolas, haverá um deslocamento inicial, por exemplo,
+    // pra a combinação de 15 bolas, o deslocamento vai de 1 a 3268760, entretanto,
+    // a função, aqui, retorna a primeira combinação com o valor 0, por isto,
+    // devemos indicar o primeiro valor.
+    long deslocamento_inicial = 1;
+    long soma_deslocamento = 0;
+
+    for(long uA = 0; uA < b1; uA++)
+        soma_deslocamento += lotofacil_deslocamento[9][uA];
+
+    for(long uA = b1 + 1; uA < b2; uA++)
+        soma_deslocamento += lotofacil_deslocamento[8][uA];
+
+    for(long uA = b2 + 1; uA < b3; uA++)
+        soma_deslocamento += lotofacil_deslocamento[7][uA];
+
+    for(long uA = b3 + 1; uA < b4; uA++)
+        soma_deslocamento += lotofacil_deslocamento[6][uA];
+
+    for(long uA = b4 + 1; uA < b5; uA++)
+        soma_deslocamento += lotofacil_deslocamento[5][uA];
+
+    for(long uA = b5 + 1; uA < b6; uA++)
+        soma_deslocamento += lotofacil_deslocamento[4][uA];
+
+    for(long uA = b6 + 1; uA < b7; uA++)
+        soma_deslocamento += lotofacil_deslocamento[3][uA];
+
+    for(long uA = b7 + 1; uA < b8; uA++)
+        soma_deslocamento += lotofacil_deslocamento[2][uA];
+
+    for(long uA = b8 + 1; uA < b9; uA++)
+        soma_deslocamento += lotofacil_deslocamento[1][uA];
+
+    for(long uA = b9 + 1; uA < b10; uA++)
+        soma_deslocamento += 1;
+
+    return soma_deslocamento + deslocamento_inicial;
+}
+
+inline long obter_deslocamento_9_bolas(long b1, long b2, long b3, long b4, long b5,
+                                long b6, long b7, long b8, long b9)
+{
+    // Pra cada combinação de qt_bolas, haverá um deslocamento inicial, por exemplo,
+    // pra a combinação de 15 bolas, o deslocamento vai de 1 a 3268760, entretanto,
+    // a função, aqui, retorna a primeira combinação com o valor 0, por isto,
+    // devemos indicar o primeiro valor.
+    long deslocamento_inicial = 1;
+    long soma_deslocamento = 0;
+
+    for(long uA = 0; uA < b1; uA++)
+        soma_deslocamento += lotofacil_deslocamento[8][uA];
+
+    for(long uA = b1 + 1; uA < b2; uA++)
+        soma_deslocamento += lotofacil_deslocamento[7][uA];
+
+    for(long uA = b2 + 1; uA < b3; uA++)
+        soma_deslocamento += lotofacil_deslocamento[6][uA];
+
+    for(long uA = b3 + 1; uA < b4; uA++)
+        soma_deslocamento += lotofacil_deslocamento[5][uA];
+
+    for(long uA = b4 + 1; uA < b5; uA++)
+        soma_deslocamento += lotofacil_deslocamento[4][uA];
+
+    for(long uA = b5 + 1; uA < b6; uA++)
+        soma_deslocamento += lotofacil_deslocamento[3][uA];
+
+    for(long uA = b6 + 1; uA < b7; uA++)
+        soma_deslocamento += lotofacil_deslocamento[2][uA];
+
+    for(long uA = b7 + 1; uA < b8; uA++)
+        soma_deslocamento += lotofacil_deslocamento[1][uA];
+
+    for(long uA = b8 + 1; uA < b9; uA++)
+        soma_deslocamento += 1;
+
+    return soma_deslocamento + deslocamento_inicial;
+}
+
+inline long obter_deslocamento_8_bolas(long b1, long b2, long b3, long b4, long b5,
+                                long b6, long b7, long b8)
+{
+    // Pra cada combinação de qt_bolas, haverá um deslocamento inicial, por exemplo,
+    // pra a combinação de 15 bolas, o deslocamento vai de 1 a 3268760, entretanto,
+    // a função, aqui, retorna a primeira combinação com o valor 0, por isto,
+    // devemos indicar o primeiro valor.
+    long deslocamento_inicial = 1;
+    long soma_deslocamento = 0;
+
+    for(long uA = 0; uA < b1; uA++)
+        soma_deslocamento += lotofacil_deslocamento[7][uA];
+
+    for(long uA = b1 + 1; uA < b2; uA++)
+        soma_deslocamento += lotofacil_deslocamento[6][uA];
+
+    for(long uA = b2 + 1; uA < b3; uA++)
+        soma_deslocamento += lotofacil_deslocamento[5][uA];
+
+    for(long uA = b3 + 1; uA < b4; uA++)
+        soma_deslocamento += lotofacil_deslocamento[4][uA];
+
+    for(long uA = b4 + 1; uA < b5; uA++)
+        soma_deslocamento += lotofacil_deslocamento[3][uA];
+
+    for(long uA = b5 + 1; uA < b6; uA++)
+        soma_deslocamento += lotofacil_deslocamento[2][uA];
+
+    for(long uA = b6 + 1; uA < b7; uA++)
+        soma_deslocamento += lotofacil_deslocamento[1][uA];
+
+    for(long uA = b7 + 1; uA < b8; uA++)
+        soma_deslocamento += 1;
+
+    return soma_deslocamento + deslocamento_inicial;
+}
+
+inline long obter_deslocamento_7_bolas(long b1, long b2, long b3, long b4, long b5,
+                                long b6, long b7)
+{
+    // Pra cada combinação de qt_bolas, haverá um deslocamento inicial, por exemplo,
+    // pra a combinação de 15 bolas, o deslocamento vai de 1 a 3268760, entretanto,
+    // a função, aqui, retorna a primeira combinação com o valor 0, por isto,
+    // devemos indicar o primeiro valor.
+    long deslocamento_inicial = 1;
+    long soma_deslocamento = 0;
+
+    for(long uA = 0; uA < b1; uA++)
+        soma_deslocamento += lotofacil_deslocamento[6][uA];
+
+    for(long uA = b1 + 1; uA < b2; uA++)
+        soma_deslocamento += lotofacil_deslocamento[5][uA];
+
+    for(long uA = b2 + 1; uA < b3; uA++)
+        soma_deslocamento += lotofacil_deslocamento[4][uA];
+
+    for(long uA = b3 + 1; uA < b4; uA++)
+        soma_deslocamento += lotofacil_deslocamento[3][uA];
+
+    for(long uA = b4 + 1; uA < b5; uA++)
+        soma_deslocamento += lotofacil_deslocamento[2][uA];
+
+    for(long uA = b5 + 1; uA < b6; uA++)
+        soma_deslocamento += lotofacil_deslocamento[1][uA];
+
+    for(long uA = b6 + 1; uA < b7; uA++)
+        soma_deslocamento += 1;
+
+    return soma_deslocamento + deslocamento_inicial;
+}
+
+inline long obter_deslocamento_6_bolas(long b1, long b2, long b3, long b4, long b5,
+                                long b6)
+{
+    // Pra cada combinação de qt_bolas, haverá um deslocamento inicial, por exemplo,
+    // pra a combinação de 15 bolas, o deslocamento vai de 1 a 3268760, entretanto,
+    // a função, aqui, retorna a primeira combinação com o valor 0, por isto,
+    // devemos indicar o primeiro valor.
+    long deslocamento_inicial = 1;
+    long soma_deslocamento = 0;
+
+    for(long uA = 0; uA < b1; uA++)
+        soma_deslocamento += lotofacil_deslocamento[5][uA];
+
+    for(long uA = b1 + 1; uA < b2; uA++)
+        soma_deslocamento += lotofacil_deslocamento[4][uA];
+
+    for(long uA = b2 + 1; uA < b3; uA++)
+        soma_deslocamento += lotofacil_deslocamento[3][uA];
+
+    for(long uA = b3 + 1; uA < b4; uA++)
+        soma_deslocamento += lotofacil_deslocamento[2][uA];
+
+    for(long uA = b4 + 1; uA < b5; uA++)
+        soma_deslocamento += lotofacil_deslocamento[1][uA];
+
+    for(long uA = b5 + 1; uA < b6; uA++)
+        soma_deslocamento += 1;
+
+    return soma_deslocamento + deslocamento_inicial;
+}
+
+inline long obter_deslocamento_5_bolas(long b1, long b2, long b3, long b4, long b5)
+{
+    // Pra cada combinação de qt_bolas, haverá um deslocamento inicial, por exemplo,
+    // pra a combinação de 15 bolas, o deslocamento vai de 1 a 3268760, entretanto,
+    // a função, aqui, retorna a primeira combinação com o valor 0, por isto,
+    // devemos indicar o primeiro valor.
+    long deslocamento_inicial = 1;
+    long soma_deslocamento = 0;
+
+    for(long uA = 0; uA < b1; uA++)
+        soma_deslocamento += lotofacil_deslocamento[4][uA];
+
+    for(long uA = b1 + 1; uA < b2; uA++)
+        soma_deslocamento += lotofacil_deslocamento[3][uA];
+
+    for(long uA = b2 + 1; uA < b3; uA++)
+        soma_deslocamento += lotofacil_deslocamento[2][uA];
+
+    for(long uA = b3 + 1; uA < b4; uA++)
+        soma_deslocamento += lotofacil_deslocamento[1][uA];
+
+    for(long uA = b4 + 1; uA < b5; uA++)
+        soma_deslocamento += 1;
+
+    return soma_deslocamento + deslocamento_inicial;
+}
+
+inline long obter_deslocamento_4_bolas(long b1, long b2, long b3, long b4)
+{
+    // Pra cada combinação de qt_bolas, haverá um deslocamento inicial, por exemplo,
+    // pra a combinação de 15 bolas, o deslocamento vai de 1 a 3268760, entretanto,
+    // a função, aqui, retorna a primeira combinação com o valor 0, por isto,
+    // devemos indicar o primeiro valor.
+    long deslocamento_inicial = 1;
+    long soma_deslocamento = 0;
+
+    for(long uA = 0; uA < b1; uA++)
+        soma_deslocamento += lotofacil_deslocamento[3][uA];
+
+    for(long uA = b1 + 1; uA < b2; uA++)
+        soma_deslocamento += lotofacil_deslocamento[2][uA];
+
+    for(long uA = b2 + 1; uA < b3; uA++)
+        soma_deslocamento += lotofacil_deslocamento[1][uA];
+
+    for(long uA = b3 + 1; uA < b4; uA++)
+        soma_deslocamento += 1;
+
+    return soma_deslocamento + deslocamento_inicial;
+}
+
+inline long obter_deslocamento_3_bolas(long b1, long b2, long b3)
+{
+    // Pra cada combinação de qt_bolas, haverá um deslocamento inicial, por exemplo,
+    // pra a combinação de 15 bolas, o deslocamento vai de 1 a 3268760, entretanto,
+    // a função, aqui, retorna a primeira combinação com o valor 0, por isto,
+    // devemos indicar o primeiro valor.
+    long deslocamento_inicial = 1;
+    long soma_deslocamento = 0;
+
+    for(long uA = 0; uA < b1; uA++)
+        soma_deslocamento += lotofacil_deslocamento[2][uA];
+
+    for(long uA = b1 + 1; uA < b2; uA++)
+        soma_deslocamento += lotofacil_deslocamento[1][uA];
+
+    for(long uA = b2 + 1; uA < b3; uA++)
+        soma_deslocamento += 1;
+
+    return soma_deslocamento + deslocamento_inicial;
+}
+
+inline long obter_deslocamento_2_bolas(long b1, long b2)
+{
+    // Pra cada combinação de qt_bolas, haverá um deslocamento inicial, por exemplo,
+    // pra a combinação de 15 bolas, o deslocamento vai de 1 a 3268760, entretanto,
+    // a função, aqui, retorna a primeira combinação com o valor 0, por isto,
+    // devemos indicar o primeiro valor.
+    long deslocamento_inicial = 1;
+    long soma_deslocamento = 0;
+
+    for(long uA = 0; uA < b1; uA++)
+        soma_deslocamento += lotofacil_deslocamento[1][uA];
+
+    for(long uA = b1 + 1; uA < b2; uA++)
+        soma_deslocamento += 1;
+
+    return soma_deslocamento + deslocamento_inicial;
+}
+
+
 
 /*!
  * \brief obter_deslocamento_15_bolas
