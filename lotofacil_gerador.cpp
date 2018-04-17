@@ -25,6 +25,7 @@
 #include "lotofacil_hash.hpp"
 #include "lotofacil_deslocamento.hpp"
 #include "lotofacil_grupo.hpp"
+#include "lotofacil_algarismo_na_dezena.hpp"
 
 
 using namespace std;
@@ -85,6 +86,11 @@ bool gerar_arquivo_id(){
         return false;
     }
 
+    if(!gerar_algarismo_na_dezena_id()){
+        fprintf(stderr, "Erro ao gerar arquivo 'algarismo_na_dezena_id.csv'");
+        return false;
+    }
+
     return true;
 }
 
@@ -129,6 +135,7 @@ bool gerador_lotofacil(){
     FILE *f_lotofacil_soma = fopen("./arquivos_csv/lotofacil_soma.csv", "w");
     FILE *f_lotofacil_hash = fopen("./arquivos_csv/lotofacil_hash.csv", "w");
     FILE *f_lotofacil_giro = fopen("./arquivos_csv/lotofacil_giro.csv", "w");
+    FILE *f_lotofacil_algarismo_na_dezena = fopen("./arquivos_csv/lotofacil_algarismo_na_dezena.csv", "w");
 
     /*
     FILE *f_lotofacil_grupo_2_bolas = fopen("./arquivos_csv/lotofacil_grupo_2_bolas.csv", "w");
@@ -217,8 +224,10 @@ bool gerador_lotofacil(){
         return false;
     }
     */
-
-
+    if(ferror(f_lotofacil_algarismo_na_dezena)){
+        fprintf(stderr, "Erro ao abrir o arquivo 'lotofacil_algarismo_na_dezena.csv', pra gravação");
+        return false;
+    }
 
     // Gera os cabecalhos dos arquivos.
     // Arquivo: lotofacil_num.csv
@@ -302,7 +311,7 @@ bool gerador_lotofacil(){
             */
     };
 
-
+    fprintf(f_lotofacil_algarismo_na_dezena, "ltf_id;ltf_qt;id_dz");
 
     // Identificador pra cada combinaçao valida da lotofacil.
     long ltf_id = 0;
@@ -358,6 +367,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
         //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
+        gerar_lotofacil_algarismo_na_dezena(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_algarismo_na_dezena);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -416,6 +426,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
         //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
+        gerar_lotofacil_algarismo_na_dezena(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_algarismo_na_dezena);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -475,6 +486,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
         //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
+        gerar_lotofacil_algarismo_na_dezena(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_algarismo_na_dezena);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -537,6 +549,7 @@ bool gerador_lotofacil(){
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
         //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
+        gerar_lotofacil_algarismo_na_dezena(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_algarismo_na_dezena);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -560,6 +573,8 @@ sair:
 //    for(int uA = 2; uA <= 10; uA++){
 //        fclose(f_lotofacil_grupo[uA]);
 //    }
+
+    fclose(f_lotofacil_algarismo_na_dezena);
 
     return true;
 }
@@ -915,6 +930,61 @@ inline bool gerar_lotofacil_diferenca(long ltf_id,
 
     // A quantidade de diferencas alternadas.
     fprintf(f_lotofacil_dif, ";%li", qt_diferenca_alternadas);
+
+    return true;
+}
+
+/**
+ * @brief gerar_lotofacil_algarismo_na_dezena
+ * Gera a contabilização de quantas bolas começa na posição das dezenas com
+ * o valor 0, 1 ou 2 pra cada combinação.
+ * @param ltf_id
+ * @param ltf_qt
+ * @param lotofacil_bolas
+ * @param f_lotofacil_dif
+ * @return
+ */
+inline bool gerar_lotofacil_algarismo_na_dezena(long ltf_id,
+                                      long ltf_qt,
+                                      const long * const lotofacil_bolas,
+                                      FILE * f_lotofacil_algarismo_na_dezena)
+{
+    if(!((ltf_qt >= 15) && (ltf_qt <= 18))){
+        return false;
+    }
+
+    long qt_dezena_0 = 0;
+    long qt_dezena_1 = 0;
+    long qt_dezena_2 = 0;
+
+    for(long uA = 1; uA <= ltf_qt; uA++){
+
+        long bola_numero = lotofacil_bolas[uA];
+        if(bola_numero <= 9)
+            qt_dezena_0++;
+        else if(bola_numero <= 19)
+            qt_dezena_1++;
+        else if(bola_numero <= 25)
+            qt_dezena_2++;
+    }
+
+    // Verifica se está dentro dos limites.
+    if(qt_dezena_0 > 9)
+        return false;
+
+    if(qt_dezena_1 > 10)
+        return false;
+
+    if(qt_dezena_2 > 6)
+        return false;
+
+
+    fprintf(f_lotofacil_algarismo_na_dezena,
+            "\n%li;%li;%li",
+            ltf_id, ltf_qt,
+            obter_algarismo_na_dezena_id(qt_dezena_0, qt_dezena_1, qt_dezena_2)
+            );
+
 
     return true;
 }

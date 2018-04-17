@@ -19,7 +19,8 @@ SOURCES += main.cpp \
     lotofacil_giro.cpp \
     lotofacil_deslocamento.cpp \
     lotofacil_novos_repetidos.cpp \
-    lotofacil_grupo.cpp
+    lotofacil_grupo.cpp \
+    lotofacil_algarismo_na_dezena.cpp
 
 
 HEADERS += \
@@ -37,4 +38,5 @@ HEADERS += \
     lotofacil_deslocamento.hpp \
     lotofacil_giro.hpp \
     lotofacil_novos_repetidos.hpp \
-    lotofacil_grupo.hpp
+    lotofacil_grupo.hpp \
+    lotofacil_algarismo_na_dezena.hpp

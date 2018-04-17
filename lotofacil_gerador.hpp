@@ -14,6 +14,12 @@ inline bool gerar_lotofacil_diferenca(long ltf_id,
                                 const long * const lotofacil_bolas,
                                 FILE * f_lotofacil_dif);
 
+inline bool gerar_lotofacil_algarismo_na_dezena(long ltf_id,
+                            long ltf_qt,
+                            const long * const lotofacil_bolas,
+                            FILE * f_lotofacil_);
+
+
 
 bool gerar_par_impar_id();
 bool gerar_primo_nao_primo_id();
