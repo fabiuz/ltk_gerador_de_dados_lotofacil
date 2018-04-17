@@ -10,4 +10,10 @@ static long algarismo_na_dezena_id[10][11][7];
 
 bool gerar_algarismo_na_dezena_id();
 long obter_algarismo_na_dezena_id(long qt_dezena_0, long qt_dezena_1, long qt_dezena_2);
+inline bool obter_lotofacil_qt_dezenas(long ltf_id,
+                                      long ltf_qt,
+                                      const long * const lotofacil_bolas,
+                                      long * qt_dz_0,
+                                      long * qt_dz_1,
+                                      long * qt_dz_2);
 

@@ -261,7 +261,7 @@ bool gerador_lotofacil(){
     fprintf(f_lotofacil_id, "ltf_id;ltf_qt;par_impar_id;ext_int_id;prm_id;"
                             "hrz_id;vrt_id;dg_id;crz_id;qrt_id;trio_id;"
                             "b1_id;b1_b2_id;b1_b2_b3_id;b1_b2_b3_b4_id;b1_b2_b3_b4_b5_id;"
-                            "b1_b15_id;b1_b8_b15_id;b1_b4_b8_b12_b15");
+                            "b1_b15_id;b1_b8_b15_id;b1_b4_b8_b12_b15;dz_id");
 
     // Arquivo: lotofacil_diferenca_entre_bolas.csv
     fprintf(f_lotofacil_diferenca, "ltf_id;ltf_qt");
@@ -791,6 +791,14 @@ inline bool gerar_lotofacil_id(long ltf_id, long ltf_qt, const long *const lotof
     long id_b1_b8_b15 = obter_b1_b8_b15_id(b1,b8,b15);
     long id_b1_b4_b8_b12_b15 = obter_b1_b4_b8_b12_b15_id(b1,b4,b8,b12,b15);
 
+    long qt_dz_0 = 0;
+    long qt_dz_1 = 0;
+    long qt_dz_2 = 0;
+
+    obter_lotofacil_qt_dezenas(ltf_id, ltf_qt, lotofacil_bolas, &qt_dz_0, &qt_dz_1, &qt_dz_2);
+
+    long id_algarismo_na_dezena = obter_algarismo_na_dezena_id(qt_dz_0, qt_dz_1, qt_dz_2);
+
     bool bErro = false;
     if(id_par_impar == -1){
         cout << "ltf_id: " << ltf_id << ", erro: id_par_impar invalido. "
@@ -815,6 +823,7 @@ inline bool gerar_lotofacil_id(long ltf_id, long ltf_qt, const long *const lotof
                                                     id_b1_b2_b3_b4,
                                                     id_b1_b2_b3_b4_b5);
     fprintf(f_arquivo_id, ";%li;%li;%li", id_b1_b15, id_b1_b8_b15, id_b1_b4_b8_b12_b15);
+    fprintf(f_arquivo_id, ";%li", id_algarismo_na_dezena);
 
     // Agora, iremos contabilizar a quantidade de combinacoes, pra posteriormente, gravarmos.
     /**
@@ -985,6 +994,52 @@ inline bool gerar_lotofacil_algarismo_na_dezena(long ltf_id,
             obter_algarismo_na_dezena_id(qt_dezena_0, qt_dezena_1, qt_dezena_2)
             );
 
+
+    return true;
+}
+
+inline bool obter_lotofacil_qt_dezenas(long ltf_id,
+                                      long ltf_qt,
+                                      const long * const lotofacil_bolas,
+                                      long * qt_dz_0,
+                                      long * qt_dz_1,
+                                      long * qt_dz_2)
+{
+    if(!((ltf_qt >= 15) && (ltf_qt <= 18))){
+        return false;
+    }
+
+    long qt_dezena_0 = 0;
+    long qt_dezena_1 = 0;
+    long qt_dezena_2 = 0;
+
+    for(long uA = 1; uA <= ltf_qt; uA++){
+
+        long bola_numero = lotofacil_bolas[uA];
+        if(bola_numero <= 9)
+            qt_dezena_0++;
+        else if(bola_numero <= 19)
+            qt_dezena_1++;
+        else if(bola_numero <= 25)
+            qt_dezena_2++;
+    }
+
+    // Verifica se está dentro dos limites.
+    if(qt_dezena_0 > 9)
+        return false;
+
+    if(qt_dezena_1 > 10)
+        return false;
+
+    if(qt_dezena_2 > 6)
+        return false;
+
+    if((!qt_dz_0) || (!qt_dz_1) || !(qt_dz_2))
+        return false;
+
+    * qt_dz_0 = qt_dezena_0;
+    * qt_dz_1 = qt_dezena_1;
+    * qt_dz_2 = qt_dezena_2;
 
     return true;
 }

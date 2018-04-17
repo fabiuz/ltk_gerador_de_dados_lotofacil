@@ -93,5 +93,4 @@ long obter_algarismo_na_dezena_id(long qt_dezena_0, long qt_dezena_1, long qt_de
         return - 1;
 
     return algarismo_na_dezena_id[qt_dezena_0][qt_dezena_1][qt_dezena_2];
-
 }
