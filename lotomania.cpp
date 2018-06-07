@@ -95,6 +95,7 @@ void gerar_lotomania(){
         if(++contador==0xFFFFFFFFFFFFFFULL /* 1_000_000_000_000_000_000 */ ){
             contador = 0;
             printf("1 quintilhão...");
+
         }
 
         /*

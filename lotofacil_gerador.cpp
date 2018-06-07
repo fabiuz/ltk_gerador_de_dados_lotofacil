@@ -4,6 +4,9 @@
   Arquivo:      lotofacil_gerador.cpp
   Descrição:    Este arquivo percorre todas as combinações possíveis da lotofacil
                 e chama as funções que geram os dados estatísticos.
+                A 'gerador_lotofacil()' gera um identificador um identificador unico
+                e exclusivo pra cada combinacao da lotofacil e armazena tais combinacoes
+                com o identificador em um arquivo *.csv.
 **/
 
 
@@ -130,12 +133,14 @@ bool gerador_lotofacil(){
     FILE *f_lotofacil_num = fopen("./arquivos_csv/lotofacil_num.csv", "w");
     FILE *f_lotofacil_bolas = fopen("./arquivos_csv/lotofacil_bolas.csv", "w");
     FILE *f_lotofacil_num_bolas = fopen("./arquivos_csv/lotofacil_num_bolas.csv", "w");
+    FILE *f_lotofacil_num_bolas_binario = fopen("./arquivos_csv/lotofacil_num_bolas.ltf_bin", "wb");
     FILE *f_lotofacil_id = fopen("./arquivos_csv/lotofacil_id.csv", "w");
     FILE *f_lotofacil_diferenca = fopen("./arquivos_csv/lotofacil_diferenca_entre_bolas.csv", "w");
     FILE *f_lotofacil_soma = fopen("./arquivos_csv/lotofacil_soma.csv", "w");
     FILE *f_lotofacil_hash = fopen("./arquivos_csv/lotofacil_hash.csv", "w");
     FILE *f_lotofacil_giro = fopen("./arquivos_csv/lotofacil_giro.csv", "w");
     FILE *f_lotofacil_algarismo_na_dezena = fopen("./arquivos_csv/lotofacil_algarismo_na_dezena.csv", "w");
+    FILE *f_lotofacil_coluna_b = fopen("./arquivos_csv/lotofacil_coluna_b.csv", "w");
 
     /*
     FILE *f_lotofacil_grupo_2_bolas = fopen("./arquivos_csv/lotofacil_grupo_2_bolas.csv", "w");
@@ -149,8 +154,6 @@ bool gerador_lotofacil(){
         FILE *f_lotofacil_grupo_10_bolas = fopen("./arquivos_csv/lotofacil_grupo_10_bolas.csv", "w");
     */
 
-
-
     if(ferror(f_lotofacil_num)){
         fprintf(stderr, "Erro ao abrir 'arquivo_lotofacil_num.csv pra gravacao");
         return false;
@@ -161,6 +164,10 @@ bool gerador_lotofacil(){
     }
     if(ferror(f_lotofacil_num_bolas)){
         fprintf(stderr, "Erro ao abrir 'arquivo_lotofacil_num_bolas.csv pra gravacao");
+        return false;
+    }
+    if(ferror(f_lotofacil_num_bolas_binario)){
+        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_num_bolas_binario.ltfbin' pra gravação");
         return false;
     }
     if(ferror(f_lotofacil_id)){
@@ -229,6 +236,12 @@ bool gerador_lotofacil(){
         return false;
     }
 
+    if(ferror(f_lotofacil_coluna_b)){
+        fprintf(stderr, "Erro ao abrir arquivo 'lotofacil_coluna_b.csv', pra gravação.");
+        return false;
+    }
+
+
     // Gera os cabecalhos dos arquivos.
     // Arquivo: lotofacil_num.csv
     fprintf(f_lotofacil_num, "ltf_id;ltf_qt");
@@ -279,6 +292,17 @@ bool gerador_lotofacil(){
 
     // Arquivo: lotofacil_giro.csv
     fprintf(f_lotofacil_giro, "ltf_id;ltf_qt;giro_tipo;ltf_id_giro;qt_bolas_em_comum");
+
+    // Arquivo: lotofacil_coluna_b.csv
+    fprintf(f_lotofacil_coluna_b, "ltf_b;ltf_qt");
+
+    for(long uA = 1; uA <= 15; uA++)
+    {
+        for(long uB = uA; uB <= 15; uB++)
+        {
+            fprintf(f_lotofacil_coluna_b, ";b%li_a_b%li_id", uA, uB);
+        }
+    }
 
     // Arquivo: lotofacil_grupo
 //    fprintf(f_lotofacil_grupo_2_bolas, "ltf_id;ltf_qt;grp_id");
@@ -362,12 +386,14 @@ bool gerador_lotofacil(){
         gerar_lotofacil_bolas(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_bolas);
         gerar_lotofacil_id(ltf_id, ltf_qt, lotofacil_num, lotofacil_bolas, f_lotofacil_id);
         gerar_lotofacil_num_bolas(ltf_id, ltf_qt, ltf_seq, lotofacil_bolas, f_lotofacil_num_bolas);
+        gerar_lotofacil_bolas_novos_repetidos_binario(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_num_bolas_binario);
         gerar_lotofacil_diferenca(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_diferenca);
         gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
         //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
         gerar_lotofacil_algarismo_na_dezena(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_algarismo_na_dezena);
+        gerar_lotofacil_coluna_b(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_coluna_b);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -421,12 +447,14 @@ bool gerador_lotofacil(){
         gerar_lotofacil_bolas(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_bolas);
         gerar_lotofacil_id(ltf_id, ltf_qt, lotofacil_num, lotofacil_bolas, f_lotofacil_id);
         gerar_lotofacil_num_bolas(ltf_id, ltf_qt, ltf_seq, lotofacil_bolas, f_lotofacil_num_bolas);
+        gerar_lotofacil_bolas_novos_repetidos_binario(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_num_bolas_binario);
         gerar_lotofacil_diferenca(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_diferenca);
         gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
         //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
         gerar_lotofacil_algarismo_na_dezena(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_algarismo_na_dezena);
+        gerar_lotofacil_coluna_b(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_coluna_b);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -481,12 +509,14 @@ bool gerador_lotofacil(){
         gerar_lotofacil_bolas(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_bolas);
         gerar_lotofacil_id(ltf_id, ltf_qt, lotofacil_num, lotofacil_bolas, f_lotofacil_id);
         gerar_lotofacil_num_bolas(ltf_id, ltf_qt, ltf_seq, lotofacil_bolas, f_lotofacil_num_bolas);
+        gerar_lotofacil_bolas_novos_repetidos_binario(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_num_bolas_binario);
         gerar_lotofacil_diferenca(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_diferenca);
         gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
-        gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
+        gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);        
         //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
         gerar_lotofacil_algarismo_na_dezena(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_algarismo_na_dezena);
+        gerar_lotofacil_coluna_b(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_coluna_b);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -544,12 +574,14 @@ bool gerador_lotofacil(){
         gerar_lotofacil_bolas(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_bolas);
         gerar_lotofacil_id(ltf_id, ltf_qt, lotofacil_num, lotofacil_bolas, f_lotofacil_id);
         gerar_lotofacil_num_bolas(ltf_id, ltf_qt, ltf_seq, lotofacil_bolas, f_lotofacil_num_bolas);
+        gerar_lotofacil_bolas_novos_repetidos_binario(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_num_bolas_binario);
         gerar_lotofacil_diferenca(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_diferenca);
         gerar_lotofacil_soma(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_soma);
         gerar_lotofacil_hash(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_hash);
         gerar_lotofacil_giro(ltf_id, ltf_qt, lotofacil_num, f_lotofacil_giro);
         //gerar_lotofacil_grupo(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_grupo);
         gerar_lotofacil_algarismo_na_dezena(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_algarismo_na_dezena);
+        gerar_lotofacil_coluna_b(ltf_id, ltf_qt, lotofacil_bolas, f_lotofacil_coluna_b);
 
         lotofacil_num[b1] = 0; lotofacil_num[b2] = 0; lotofacil_num[b3] = 0; lotofacil_num[b4] = 0;
         lotofacil_num[b5] = 0; lotofacil_num[b6] = 0; lotofacil_num[b7] = 0; lotofacil_num[b8] = 0;
@@ -565,10 +597,12 @@ sair:
     fclose(f_lotofacil_bolas);
     fclose(f_lotofacil_id);
     fclose(f_lotofacil_num_bolas);
+    fclose(f_lotofacil_num_bolas_binario);
     fclose(f_lotofacil_diferenca);
     fclose(f_lotofacil_soma);
     fclose(f_lotofacil_hash);
     fclose(f_lotofacil_giro);
+    fclose(f_lotofacil_coluna_b);
 
 //    for(int uA = 2; uA <= 10; uA++){
 //        fclose(f_lotofacil_grupo[uA]);
@@ -627,6 +661,232 @@ inline bool gerar_lotofacil_bolas(long ltf_id, long ltf_qt, const long *const lo
 }
 
 /**
+ *  Gera os dados pra o arquivo 'lotofacil_coluna_b.csv'.
+ *
+**/
+inline bool gerar_lotofacil_coluna_b(long ltf_id, long ltf_qt, const long *const lotofacil_bolas, FILE * f_lotofacil_coluna_b)
+{
+    fprintf(f_lotofacil_coluna_b, "\n%li;%li", ltf_id, ltf_qt);
+
+    // Há 121 elementos, de 0 a 120, entretanto, iremos usar os índices de 1 a 120.
+    long coluna_b_id[121];
+    memset(coluna_b_id, 0, sizeof(long) * 121);
+    long *pt = &coluna_b_id[1];
+
+    const long * pt_b = lotofacil_bolas;
+
+    /*
+     * Algoritmo
+     * Autor    :   Fábio Moura de Oliveira
+     * Descrição:   Dado um arranjo com bolas ordenadas em ordem crescente, obter
+     *              os grupos de 1 até o total de bolas do grupo.
+     *
+     */
+
+    for(long uA = 1; uA <= 15; uA++)
+    {
+        switch(uA){
+        case 1:
+            // Aponta pra coluna antes de b_1.
+            pt_b = lotofacil_bolas;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+            *pt = obter_deslocamento_6_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6]); pt++;
+            *pt = obter_deslocamento_7_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7]); pt++;
+            *pt = obter_deslocamento_8_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8]); pt++;
+            *pt = obter_deslocamento_9_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9]); pt++;
+            *pt = obter_deslocamento_10_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10]); pt++;
+            *pt = obter_deslocamento_11_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11]); pt++;
+            *pt = obter_deslocamento_12_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11], pt_b[12]); pt++;
+            *pt = obter_deslocamento_13_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11], pt_b[12], pt_b[13]); pt++;
+            *pt = obter_deslocamento_14_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11], pt_b[12], pt_b[13], pt_b[14]); pt++;
+            *pt = obter_deslocamento_15_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11], pt_b[12], pt_b[13], pt_b[14], pt_b[15]); pt++;
+            break;
+
+        case 2:
+            // Aponta pra coluna antes de b_2.
+            pt_b = lotofacil_bolas + 1;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+            *pt = obter_deslocamento_6_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6]); pt++;
+            *pt = obter_deslocamento_7_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7]); pt++;
+            *pt = obter_deslocamento_8_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8]); pt++;
+            *pt = obter_deslocamento_9_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9]); pt++;
+            *pt = obter_deslocamento_10_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10]); pt++;
+            *pt = obter_deslocamento_11_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11]); pt++;
+            *pt = obter_deslocamento_12_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11], pt_b[12]); pt++;
+            *pt = obter_deslocamento_13_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11], pt_b[12], pt_b[13]); pt++;
+            *pt = obter_deslocamento_14_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11], pt_b[12], pt_b[13], pt_b[14]); pt++;
+        break;
+
+        case 3:
+            pt_b = lotofacil_bolas + 2;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+            *pt = obter_deslocamento_6_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6]); pt++;
+            *pt = obter_deslocamento_7_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7]); pt++;
+            *pt = obter_deslocamento_8_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8]); pt++;
+            *pt = obter_deslocamento_9_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9]); pt++;
+            *pt = obter_deslocamento_10_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10]); pt++;
+            *pt = obter_deslocamento_11_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11]); pt++;
+            *pt = obter_deslocamento_12_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11], pt_b[12]); pt++;
+            *pt = obter_deslocamento_13_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11], pt_b[12], pt_b[13]); pt++;
+        break;
+        case 4:
+            pt_b = lotofacil_bolas + 3;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+            *pt = obter_deslocamento_6_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6]); pt++;
+            *pt = obter_deslocamento_7_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7]); pt++;
+            *pt = obter_deslocamento_8_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8]); pt++;
+            *pt = obter_deslocamento_9_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9]); pt++;
+            *pt = obter_deslocamento_10_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10]); pt++;
+            *pt = obter_deslocamento_11_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11]); pt++;
+            *pt = obter_deslocamento_12_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11], pt_b[12]); pt++;
+        break;
+
+        case 5:
+            pt_b = lotofacil_bolas + 4;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+            *pt = obter_deslocamento_6_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6]); pt++;
+            *pt = obter_deslocamento_7_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7]); pt++;
+            *pt = obter_deslocamento_8_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8]); pt++;
+            *pt = obter_deslocamento_9_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9]); pt++;
+            *pt = obter_deslocamento_10_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10]); pt++;
+            *pt = obter_deslocamento_11_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10], pt_b[11]); pt++;
+        break;
+
+        case 6:
+            pt_b = lotofacil_bolas + 5;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+            *pt = obter_deslocamento_6_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6]); pt++;
+            *pt = obter_deslocamento_7_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7]); pt++;
+            *pt = obter_deslocamento_8_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8]); pt++;
+            *pt = obter_deslocamento_9_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9]); pt++;
+            *pt = obter_deslocamento_10_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9], pt_b[10]); pt++;
+        break;
+
+        case 7:
+            pt_b = lotofacil_bolas + 6;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+            *pt = obter_deslocamento_6_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6]); pt++;
+            *pt = obter_deslocamento_7_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7]); pt++;
+            *pt = obter_deslocamento_8_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8]); pt++;
+            *pt = obter_deslocamento_9_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8], pt_b[9]); pt++;
+        break;
+
+        case 8:
+            pt_b = lotofacil_bolas + 7;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+            *pt = obter_deslocamento_6_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6]); pt++;
+            *pt = obter_deslocamento_7_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7]); pt++;
+            *pt = obter_deslocamento_8_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7], pt_b[8]); pt++;
+        break;
+
+        case 9:
+            pt_b = lotofacil_bolas + 8;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+            *pt = obter_deslocamento_6_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6]); pt++;
+            *pt = obter_deslocamento_7_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6], pt_b[7]); pt++;
+        break;
+
+        case 10:
+            pt_b = lotofacil_bolas + 9;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+            *pt = obter_deslocamento_6_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5], pt_b[6]); pt++;
+        break;
+
+        case 11:
+            pt_b = lotofacil_bolas + 10;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+            *pt = obter_deslocamento_5_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4], pt_b[5]); pt++;
+        break;
+
+        case 12:
+            pt_b = lotofacil_bolas + 11;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+            *pt = obter_deslocamento_4_bolas(pt_b[1], pt_b[2], pt_b[3], pt_b[4]); pt++;
+        break;
+
+        case 13:
+            pt_b = lotofacil_bolas + 12;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+            *pt = obter_deslocamento_3_bolas(pt_b[1], pt_b[2], pt_b[3]); pt++;
+        break;
+
+        case 14:
+            pt_b = lotofacil_bolas + 13;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+            *pt = obter_deslocamento_2_bolas(pt_b[1], pt_b[2]); pt++;
+        break;
+
+        case 15:
+            pt_b = lotofacil_bolas + 14;
+            *pt = obter_deslocamento_1_bola(pt_b[1]); pt++;
+        break;
+
+        }
+    }
+
+    for(long uA = 1; uA <= 120; uA++){
+        fprintf(f_lotofacil_coluna_b, ";%li", coluna_b_id[uA]);
+    }
+
+    if(ferror(f_lotofacil_coluna_b))
+    {
+        return false;
+    }
+
+    return true;
+
+}
+
+
+
+
+/**
  * @brief gerar_lotofacil_num_bolas
  * @param ltf_id
  * @param ltf_qt
@@ -655,6 +915,51 @@ inline bool gerar_lotofacil_num_bolas(long ltf_id,
 
     return true;
 }
+
+/**
+ * @brief A st_ltf_num_bolas struct
+ * usada pra armazenar em formato binário todas as combinações
+ * possíveis da lotofacil.
+ * Há 6874010 combinações possíveis.
+ */
+struct st_ltf_num_bolas{
+    unsigned int ltf_id;                        // 4 bytes: de 1 a 6874010
+    unsigned char ltf_qt;                       // 1 byte:  de 15 a 18.
+    unsigned char novos_repetidos_id;           // de 0 a 10.
+    unsigned char qt_bolas_comuns_b1_a_b15;     // de 0 a 15.
+    unsigned char qt_bolas_subindo_b1_a_b15;    // de 0 a 15.
+    unsigned char qt_bolas_descendo_b1_a_b15;   // de 0 a 15.
+    unsigned char nao_usado[3];                 // Serve pra alinhar a próxima estrutura em posição multipla de 4 bytes.
+    unsigned int novos_repetidos_id_alternado;
+    unsigned int id_aleatorio;
+    unsigned char bolas[20];            // 2 bytes adicional pra alinhamento.
+};
+
+inline bool gerar_lotofacil_bolas_novos_repetidos_binario(long ltf_id,
+                                      long ltf_qt,
+                                      const long *const lotofacil_bolas,
+                                      FILE *f_lotofacil_num_bolas_binario){
+
+    st_ltf_num_bolas ltf_num_bolas;
+
+    // Todo o registro será zerado.
+    memset(&ltf_num_bolas, 0, sizeof(st_ltf_num_bolas));
+
+    ltf_num_bolas.ltf_id = static_cast<unsigned int>(ltf_id);
+    ltf_num_bolas.ltf_qt = static_cast<unsigned char>(ltf_qt);
+
+    for(int uA = 1; uA <= ltf_qt; uA++){
+        ltf_num_bolas.bolas[uA] = static_cast<unsigned char>(lotofacil_bolas[uA]);
+    }
+    fwrite(&ltf_num_bolas, sizeof(st_ltf_num_bolas), 1, f_lotofacil_num_bolas_binario);
+    if(ferror(f_lotofacil_num_bolas_binario)){
+        fprintf(stderr, "Erro ao gravar dados em 'lotofacil_num.csv'\n");
+        return false;
+    }
+
+    return true;
+}
+
 
 
 /**

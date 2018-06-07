@@ -9,6 +9,12 @@ inline bool gerar_lotofacil_num_bolas(long ltf_id,
                                       long long & ltf_seq,
                                       const long *const lotofacil_bolas,
                                       FILE *f_lotofacil_num_bolas);
+
+inline bool gerar_lotofacil_bolas_novos_repetidos_binario(long ltf_id,
+                                      long ltf_qt,
+                                      const long *const lotofacil_bolas,
+                                      FILE *f_lotofacil_num_bolas_binario);
+
 inline bool gerar_lotofacil_diferenca(long ltf_id,
                                 long ltf_qt,
                                 const long * const lotofacil_bolas,
@@ -18,6 +24,8 @@ inline bool gerar_lotofacil_algarismo_na_dezena(long ltf_id,
                             long ltf_qt,
                             const long * const lotofacil_bolas,
                             FILE * f_lotofacil_);
+
+inline bool gerar_lotofacil_coluna_b(long ltf_id, long ltf_qt, const long *const lotofacil_bolas, FILE * f_lotofacil_coluna_b);
 
 
 
