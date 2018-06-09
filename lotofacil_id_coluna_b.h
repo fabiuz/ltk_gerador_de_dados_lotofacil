@@ -14,3 +14,6 @@ long obter_b1_b2_b3_id(long b1, long b2, long b3);
 long obter_b1_b2_b3_b4_id(long b1, long b2, long b3, long b4);
 long obter_b1_b2_b3_b4_b5_id(long b1, long b2, long b3, long b4, long b5);
 
+long obter_comparacao_bola_na_mesma_coluna(long qt_comum, long qt_subindo, long qt_descendo);
+
+

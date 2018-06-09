@@ -73,6 +73,60 @@ const unsigned long QT_BOLAS_ALOCADAS_B1_B2_B3 = sizeof(long) * 12 * static_cast
 const unsigned long QT_BOLAS_ALOCADAS_B1_B2_B3_B4 = sizeof(long) * 12 * static_cast<unsigned long>(pow(26, 3)) * 6;
 const unsigned long QT_BOLAS_ALOCADAS_B1_B2_B3_B4_B5 = sizeof(long) * 12 * static_cast<unsigned long>(pow(26, 4)) * 6;
 
+/**
+ * @brief bolas_na_mesma_coluna Armazena as combinações válidas de 15 bolas
+ */
+static long bolas_na_mesma_coluna[16][16][16];
+
+long obter_comparacao_bola_na_mesma_coluna(long qt_comum, long qt_subindo, long qt_descendo)
+{
+    return bolas_na_mesma_coluna[qt_comum][qt_subindo][qt_descendo];
+}
+
+bool gerar_id_comparacao_bola_na_mesma_coluna()
+{
+    FILE * f_lotofacil_id_comparacao_de_bolas_na_mesma_coluna = fopen("./arquivos_csv/lotofacil_id_comparacao_de_bolas_na_mesma_coluna.csv", "w");
+    if(!f_lotofacil_id_comparacao_de_bolas_na_mesma_coluna){
+        fprintf(stderr, "Erro ao abrir arquivo lotofacil_id_b1_b4_b8_b12_b15.csv pra gravaçao");
+        return false;
+    }
+
+    // Grava o cabeçalho;
+    fprintf(f_lotofacil_id_comparacao_de_bolas_na_mesma_coluna, "cmp_b_id;qt_bolas_comuns_b1_a_b15;qt_bolas_subindo_b1_a_b15;qt_bolas_descendo_b1_a_b15");
+
+    long cmp_b_id = 0;
+    for (long uA = 0; uA <= 15; uA++)
+        for (long uB = 0; uB <= 15; uB++)
+            for (long uC = 0; uC <= 15; uC++)
+            {
+                long soma = uA + uB + uC;
+
+                if (soma == 15)
+                {
+                    cmp_b_id++;
+                    fprintf(f_lotofacil_id_comparacao_de_bolas_na_mesma_coluna, "\n%li;%li;%li;%li", cmp_b_id, uA, uB, uC);
+                }
+            }
+    fclose(f_lotofacil_id_comparacao_de_bolas_na_mesma_coluna);
+
+    // Gera o sql, pra não precisa inserir
+    f_lotofacil_id_comparacao_de_bolas_na_mesma_coluna = fopen("./arquivos_csv/lotofacil_id_comparacao_de_bolas_na_mesma_coluna.sql", "w");
+
+    if (!f_lotofacil_id_comparacao_de_bolas_na_mesma_coluna)
+    {
+        fprintf(stderr, "Nao foi possível gerar o arquivo de importação sql.");
+        return false;
+    }
+
+    // Gera o script sql que serve pra inserir os dados na tabela 'lotofacil_id_comparacao_de_bolas_na_mesma_coluna'.
+    fprintf(f_lotofacil_id_comparacao_de_bolas_na_mesma_coluna, "\\copy lotofacil.lotofacil_id_comparacao_de_bolas_na_mesma_coluna(cmp_b_id, qt_bolas_comuns_b1_a_b15,"
+            "qt_bolas_subindo_b1_a_b15,qt_bolas_descendo_b1_a_b15 from ./lotofacil_id_comparacao_de_bolas_na_mesma_coluna.csv with (delimiter ',', format csv, header true)");
+    fclose(f_lotofacil_id_comparacao_de_bolas_na_mesma_coluna);
+
+    return true;
+}
+
+
 
 
 
@@ -193,7 +247,8 @@ bool gerar_coluna_b(){
             gerar_b1_b2_id() &&
             gerar_b1_b2_b3_id() &&
             gerar_b1_b2_b3_b4_id() &&
-            gerar_b1_b2_b3_b4_b5_id();
+            gerar_b1_b2_b3_b4_b5_id() &&
+            gerar_id_comparacao_bola_na_mesma_coluna();
 }
 
 

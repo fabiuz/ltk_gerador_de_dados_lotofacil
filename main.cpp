@@ -22,15 +22,15 @@ using namespace std;
 bool gerador_lotofacil();
 void gerar_lotomania();
 
-int **lotofacil;
-int lotofacil2[6874011][26];
+//int **lotofacil;
+//int lotofacil2[6874011][26];
 
 int main()
 {
-    lotofacil = new int*[6874011];
+    //lotofacil = new int*[6874011];
 
     for(int uA = 0; uA < 6874011; uA++){
-        lotofacil[uA] = new int[26];
+        ///lotofacil[uA] = new int[26];
     }
 
 

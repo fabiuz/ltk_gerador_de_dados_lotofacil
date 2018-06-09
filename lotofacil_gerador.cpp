@@ -929,7 +929,8 @@ struct st_ltf_num_bolas{
     unsigned char qt_bolas_comuns_b1_a_b15;     // de 0 a 15.
     unsigned char qt_bolas_subindo_b1_a_b15;    // de 0 a 15.
     unsigned char qt_bolas_descendo_b1_a_b15;   // de 0 a 15.
-    unsigned char nao_usado[3];                 // Serve pra alinhar a próxima estrutura em posição multipla de 4 bytes.
+    unsigned char cmp_b_id;                     // Cabe tudo em um unico byte.
+    unsigned char nao_usado[2];                 // Serve pra alinhar a próxima estrutura em posição multipla de 4 bytes.
     unsigned int novos_repetidos_id_alternado;
     unsigned int id_aleatorio;
     unsigned char bolas[20];            // 2 bytes adicional pra alinhamento.
